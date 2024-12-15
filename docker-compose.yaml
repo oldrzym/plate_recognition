@@ -1,50 +1,37 @@
-version: '3.9'
-
-x-environment:
-  &default-env
-  POSTGRES_HOST: postgres
-  POSTGRES_PORT: 5432
-  POSTGRES_USER: user
-  POSTGRES_PASSWORD: password
-  POSTGRES_DB: app_db
-  ENV: prod
-
 services:
   postgres:
     image: postgres:14
     container_name: postgres
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: app_db
+    env_file: 
+      - .env  
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
-  video_processor:
+  service:
     build:
-      context: .
+      context: ./service
       dockerfile: Dockerfile
-    container_name: video_processor
-    environment:
-      <<: *default-env
+    container_name: service
+    env_file: 
+      - .env  
     depends_on:
       - postgres
-    command: ["python", "main.py"]
+    network_mode: host
 
   api:
     build:
-      context: .
-      dockerfile: Dockerfile.api
+      context: ./api
+      dockerfile: Dockerfile
     container_name: api
-    environment:
-      <<: *default-env
+    env_file: 
+      - .env  
     depends_on:
       - postgres
     ports:
       - "8000:8000"
-      
+    
 volumes:
   postgres_data:

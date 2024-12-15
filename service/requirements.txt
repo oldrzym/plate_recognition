@@ -1,0 +1,8 @@
+opencv-python
+python-dotenv
+torch
+transformers
+ultralytics
+Pillow
+requests
+psycopg2-binary
