@@ -45,11 +45,12 @@ git checkout dev
    на:
    ```plaintext
    ENV=prod
-   ```,
-   а также 
+   ```
+   , а также 
       ```plaintext
    VIDEO_SOURCE=rtsp://192.168.1.100:554/stream
-   ``` на актуальный адрес видеокамеры
+   ``` 
+   на актуальный адрес видеокамеры
 2. Запустите Docker Compose:
    ```bash
    docker-compose up --build
